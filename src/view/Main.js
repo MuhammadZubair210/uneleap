@@ -82,6 +82,10 @@ export default class Main extends React.Component {
         this.props.navigation.navigate('Welcome');
     }
 
+    profileNav = () => {
+        this.props.navigation.navigate('Profile');
+    }
+
     toggle() {
         this.setState({
             isOpen: !this.state.isOpen,
@@ -112,8 +116,17 @@ export default class Main extends React.Component {
                 isOpen={this.state.isOpen}
                 onChange={isOpen => this.updateMenuState(isOpen)}
             >
+
+
+
                 <View style={styles.container}>
-                <Text style={styles.text}>{this.state.isVerified}</Text>
+                <TouchableOpacity style={styles.SignUp}
+                    onPress={this.onLogoutPress}>
+
+                    <Text onPress={this.profileNav}
+                style={styles.text}>Profile</Text>
+
+                </TouchableOpacity>
                 <TouchableOpacity style={styles.SignUp}
                     onPress={this.onLogoutPress}>
 

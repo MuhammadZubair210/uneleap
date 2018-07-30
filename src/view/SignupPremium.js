@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, TouchableOpacity,BackHandler , ScrollView, Picker, TextInput, KeyboardAvoidingView, Alert,StatusBar } from 'react-native'
+import { View, Text, TouchableOpacity,BackHandler , ScrollView, Picker, TextInput, KeyboardAvoidingView, Alert,StatusBar,ToastAndroid } from 'react-native'
 import styles from '../style/css'
 import * as Animatable from 'react-native-animatable'
 import * as firebase from 'firebase'
@@ -106,6 +106,13 @@ export default class SignupPremium extends React.Component {
                     });
 
                 this.props.navigation.navigate('Main')
+                ToastAndroid.showWithGravityAndOffset(
+                    'Activation Mail Send to you Email.',
+                    ToastAndroid.LONG,
+                    ToastAndroid.BOTTOM,
+                    25,
+                    50
+                  );
             }, (error) => { Alert.alert(error.message); });
     }
 
