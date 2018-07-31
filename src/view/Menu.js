@@ -332,6 +332,7 @@ export default class Menu extends React.Component {
                         style={styles.help}
                     >
                         <Text> Help </Text>
+                        
                     </TouchableOpacity>
                     {/* <TouchableOpacity
                         onPress={this.onLogoutPress}
