@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Image, Alert, BackHandler, ScrollView, TextInput, TouchableOpacity, KeyboardAvoidingView,StatusBar } from 'react-native'
+import { View, Text, Image, Alert, BackHandler, ScrollView, TextInput,ToastAndroid, TouchableOpacity, KeyboardAvoidingView, StatusBar } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import styles from '../style/css'
 import firebase from 'firebase'
@@ -24,17 +24,35 @@ export default class LoginView extends React.Component {
 
     componentDidMount() {
         StatusBar.setHidden(true);
-        
-      }
-    
+
+    }
 
 
-    
+
+
 
     onLoginPress = () => {
         firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
             .then(() => {
-                this.props.navigation.navigate('Main');
+                // this.props.navigation.navigate('Main');
+
+                var verification = firebase.auth().currentUser.emailVerified;
+                console.log(verification);
+
+                if (verification) {
+                    this.props.navigation.navigate('Main')
+                }
+                else {
+                    Alert.alert("You are not verified..")
+                    firebase.auth().currentUser.sendEmailVerification();
+                    ToastAndroid.showWithGravityAndOffset(
+                        'Activation Mail sent again.',
+                        ToastAndroid.LONG,
+                        ToastAndroid.BOTTOM,
+                        25,
+                        50
+                    );
+                }
 
             }, (error) => { Alert.alert(error.message); });
     }
@@ -96,7 +114,7 @@ export default class LoginView extends React.Component {
                                 />
                             </View>
 
-                            
+
 
                             <View style={styles.inputSection}>
                                 <Icon

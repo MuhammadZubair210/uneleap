@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, TouchableOpacity,BackHandler , ScrollView, Picker, TextInput, KeyboardAvoidingView, Alert,StatusBar,ToastAndroid } from 'react-native'
+import { View, Text, TouchableOpacity, BackHandler, ScrollView, Picker, TextInput, KeyboardAvoidingView, Alert, StatusBar, ToastAndroid } from 'react-native'
 import styles from '../style/css'
 import * as Animatable from 'react-native-animatable'
 import * as firebase from 'firebase'
@@ -12,9 +12,9 @@ import { Icon } from 'react-native-elements'
 export default class SignupPremium extends React.Component {
     constructor(props) {
         super(props)
-        
+
         this.state = {
-            
+
             init: true,
             errMsg: null,
             navigate: null,
@@ -34,7 +34,7 @@ export default class SignupPremium extends React.Component {
 
     componentDidMount() {
         StatusBar.setHidden(true);
-     }
+    }
 
 
     onSignupPress = () => {
@@ -50,13 +50,18 @@ export default class SignupPremium extends React.Component {
         // emailExistence.check(this.state.email, function(error, response){
         //     Alert.alert(response);
         //     Alert.alert(error)
-            
+
         // });
 
 
 
         firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
             .then(() => {
+                var userId = firebase.auth().currentUser.uid
+                firebase.auth().currentUser.sendEmailVerification();
+
+                var verification = firebase.auth().currentUser.emailVerified;
+                console.log(verification);
                 let holder;
                 if (this.state.userType == "University Admin") {
                     userTypeVar = "University";
@@ -65,54 +70,37 @@ export default class SignupPremium extends React.Component {
                     userTypeVar = "Company";
                 }
                 var userId = firebase.auth().currentUser.uid
-                // firebase.database().ref('Users/' + userId).set(
-                //     {
-                //         FullName: this.state.fullName,
-                //         Email: this.state.email,
-                //         UserType: this.state.userType,
-                //         // Gender: this.state.gender,
-                //         Preimium: this.state.university,
-                //         // Affiliation: this.state.affiliation,
-                //         // Degree: this.state.degree,
-
-                //     },
-
-                // )
-
-                // firebase.firestore.collection("cities").add({
-                //     name: "Tokyo",
-                //     country: "Japan"
-                // })
-                // .then(function(docRef) {
-                //     console.log("Document written with ID: ", docRef.id);
-                // })
-                // .catch(function(error) {
-                //     console.error("Error adding document: ", error);
-                // });
 
                 var db = firebase.firestore();
 
-                const settings ={ timestampsInSnapshots:true};
+                const settings = { timestampsInSnapshots: true };
                 db.settings(settings)
 
                 db.collection('Users').doc(userId).set({
-                            FullName: this.state.fullName,
-                            Email: this.state.email,
-                            UserType: this.state.userType,
-                            // Gender: this.state.gender,
-                            Preimium: this.state.university,
-                            // Affiliation: this.state.affiliation,
-                            // Degree: this.state.degree,
-                    });
+                    FullName: this.state.fullName,
+                    Email: this.state.email,
+                    UserType: this.state.userType,
+                    // Gender: this.state.gender,
+                    Preimium: this.state.university,
+                    Verification: verification,
+                    ImageUrl: "null",
+                    // Affiliation: this.state.affiliation,
+                    // Degree: this.state.degree,
+                });
 
-                this.props.navigation.navigate('Main')
                 ToastAndroid.showWithGravityAndOffset(
-                    'Activation Mail Send to you Email.',
+                    'Activation Mail Send to your Email.',
                     ToastAndroid.LONG,
                     ToastAndroid.BOTTOM,
                     25,
                     50
-                  );
+                );
+                if (verification) {
+                    this.props.navigation.navigate('Main')
+                }
+                else {
+                    this.props.navigation.navigate('Login')
+                }
             }, (error) => { Alert.alert(error.message); });
     }
 

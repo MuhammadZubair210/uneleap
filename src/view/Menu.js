@@ -19,8 +19,10 @@ import firestore from 'firebase/firestore'
 import imageURL from './Main'
 
 const window = Dimensions.get('window');
-var uri;
-var AvatartUrl = null;
+var uri = 'http://api.skype.com/users/echo/profile/avatar?size=l';
+var UserAvatar = '';
+var Name;
+var isAvatar = false;
 
 
 const styles = StyleSheet.create({
@@ -35,7 +37,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#000000',
         flexDirection: 'row',
-        paddingBottom: 10,
+        paddingBottom: 20,
+        paddingTop: 20,
     },
     avatar: {
         width: 90,
@@ -54,7 +57,7 @@ const styles = StyleSheet.create({
     },
     Name: {
         // fontFamily: 'Sans-Serif',
-        fontSize: 20,
+        fontSize: 18,
         color: '#ffffff',
         justifyContent: 'center',
     },
@@ -76,23 +79,22 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     footer: {
+        flex: 2,
         flexDirection: 'row',
         justifyContent: 'flex-end',
+        alignItems: 'flex-end',
         marginTop: 10,
-        paddingBottom: 15
+        paddingBottom: 5
     },
     item: {
         width: '100%',
-        padding: 10,
+        padding: 12,
         flexDirection: 'row',
-        borderBottomWidth: 1,
-        borderColor: '#99C6C3',
     },
     Title: {
         flex: 1,
-        color: '#79AEAA',
         marginLeft: 10,
-        fontSize: 14,
+        fontSize: 18,
     },
     UploadImage: {
         alignItems: 'center',
@@ -102,281 +104,299 @@ const styles = StyleSheet.create({
         flex: 1,
         // marginTop:20,
     },
+    listContainer: {
+        flex: 1,
+        marginTop: '8%',
+    }
     // myAvatar:{
     //     flex:1,
     // }
 });
 
+// export default function Menu({ onItemSelected }) {
+export default class Menu extends React.Component {
 
-state = {
-    image: null,
-    Name: null,
-    Verification: null,
-};
+    constructor(props) {
+        super(props)
+        this.state = {
+            navigate: null,
+        }
+    }
 
-export default function Menu({ onItemSelected }) {
+    componentWillMount() {
+
+        var userId = firebase.auth().currentUser.uid;
+        var db = firebase.firestore();
+
+        const settings = { timestampsInSnapshots: true };
+        db.settings(settings)
+
+        db.collection('Users').doc(userId).get().then(function (doc) {
+
+            UserAvatar = doc.data().ImageUrl;
+            Name = doc.data().FullName;
+
+            if (UserAvatar == "null") {
+            }
+            else {
+                uri = UserAvatar;
+                console.log("avatar" + UserAvatar)
+            }
+
+        });
+
+    }
+
+    onLogoutPress = () => {
+        firebase.auth().signOut();
+        this.props.navigation.navigate('Welcome')
+    }
+    render() {
+        var userId = firebase.auth().currentUser.uid;
+        var db = firebase.firestore();
+
+        const settings = { timestampsInSnapshots: true };
+        db.settings(settings)
+
+        db.collection('Users').doc(userId).get().then(function (doc) {
+
+            UserAvatar = doc.data().ImageUrl;
+            Name = doc.data().FullName;
+
+            if (UserAvatar == "null") {
+            }
+            else {
+                uri = UserAvatar;
+                console.log("avatar" + UserAvatar)
+            }
+
+        });
+
+        return (
+            <ScrollView style={styles.menu}>
+
+                <View style={styles.avatarContainer}>
+
+                    <View style={styles.myAvatar}>
+                        <TouchableOpacity
+                            onPress={this.onChooseImagePress}
+                        >
+                            <Image
+                            style={styles.avatar}
+                            source={{ uri }}
+                        />
 
 
-    // var userId = firebase.auth().currentUser.uid;
-    // var db = firebase.firestore();
-
-    // const settings = { timestampsInSnapshots: true };
-    // db.settings(settings)
-
-    // db.collection('Users').doc(userId).get().then(function (doc) {
-
-    //     AvatartUrl = doc.data().ImageUrl;
-    //     this.state.Name = doc.data().FullName;
-    //     this.state.Verification = doc.data().Verification;
-
-    // });
-
-    var userId = firebase.auth().currentUser.uid;
-    var db = firebase.firestore();
-
-    const settings = { timestampsInSnapshots: true };
-    db.settings(settings)
-
-    db.collection('Users').doc(userId).get().then(function (doc) {
-
-        uri = doc.data().ImageUrl;
-        this.state.Name = doc.data().FullName;
-        this.state.Verification = doc.data().Verification;
-
-        
-
-        // if(AvatartUrl != null){
-        //     uri = AvatartUrl;
-        // }
-
-    });
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.info}>
+                        <Text style={styles.Name}> {Name} </Text>
+                    </View>
+                </View>
 
 
-    // let { image } = this.state;
+                <View style={styles.listContainer}>
 
-    return (
-        <ScrollView style={styles.menu}>
 
-            {/* <ImageBackground style={styles.Background}
-                source={require('../image/background.jpg')}>
-            </ImageBackground> */}
-
-            <View style={styles.avatarContainer}>
-
-                <View style={styles.myAvatar}>
-                    <Image
-                        style={styles.avatar}
-                        source={{uri}}
-                    />
                     <TouchableOpacity
-                        onPress={this.onChooseImagePress}
-                        style={styles.button}
+                        style={styles.listitem}
+                        onPress={this.Clicked}>
+                        {
+                            <View style={styles.item}>
+                                <Text style={styles.Title}>Forum</Text>
+                            </View>
+                        }
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.listitem}
+                        onPress={this.Clicked}>
+                        {
+                            <View style={styles.item}>
+                                <Text style={styles.Title}>Event</Text>
+
+                            </View>
+                        }
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.listitem}
+                        onPress={this.Clicked}>
+                        {
+                            <View style={styles.item}>
+                                <Text style={styles.Title}>Cloud</Text>
+
+                            </View>
+                        }
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.listitem}
+                        onPress={this.Clicked}>
+                        {
+                            <View style={styles.item}>
+                                <Text style={styles.Title}>Library</Text>
+
+                            </View>
+                        }
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        style={styles.listitem}
+                        onPress={this.Clicked}>
+                        {
+                            <View style={styles.item}>
+
+                                <Text style={styles.Title}>Brainbox</Text>
+
+                            </View>
+                        }
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.listitem}
+                        onPress={this.Clicked}>
+                        {
+                            <View style={styles.item}>
+
+                                <Text style={styles.Title}>Messages</Text>
+
+                            </View>
+                        }
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.listitem}
+                        onPress={this.Clicked}>
+                        {
+                            <View style={styles.item}>
+                                <Text style={styles.Title}>News and TV</Text>
+
+                            </View>
+                        }
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.listitem}
+                        onPress={this.Clicked}>
+                        {
+                            <View style={styles.item}>
+
+                                <Text style={styles.Title}>Social</Text>
+
+                            </View>
+                        }
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.listitem}
+                        onPress={this.Clicked}>
+                        {
+                            <View style={styles.item}>
+
+                                <Text style={styles.Title}>Market</Text>
+
+                            </View>
+                        }
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.listitem}
+                        onPress={this.Clicked}>
+                        {
+                            <View style={styles.item}>
+
+                                <Text style={styles.Title}>Forum</Text>
+
+                            </View>
+                        }
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.listitem}
+                        onPress={this.Clicked}>
+                        {
+                            <View style={styles.item}>
+
+                                <Text style={styles.Title}>Rewards</Text>
+
+                            </View>
+                        }
+                    </TouchableOpacity>
+                </View>
+
+
+                <View style={styles.footer}>
+
+                    <TouchableOpacity
+                        // onPress={this._pickImage}
+                        style={styles.setting}
                     >
-                        <Text style={styles.UploadImage}> Upload Image </Text>
+                        <Text> Settings </Text>
 
 
                     </TouchableOpacity>
+                    <TouchableOpacity
+                        // onPress={this._pickImage}
+                        style={styles.help}
+                    >
+                        <Text> Help </Text>
+                    </TouchableOpacity>
+                    {/* <TouchableOpacity
+                        onPress={this.onLogoutPress}
+                        style={styles.help}
+                    >
+                        <Text> Logout </Text>
+                    </TouchableOpacity> */}
                 </View>
-                <View style={styles.info}>
-                    <Text style={styles.Name}> {this.state.Name} </Text>
-                    <Text style={styles.veri}> {this.state.Verification} </Text>
-                </View>
-            </View>
 
 
 
-            <TouchableOpacity
-                style={styles.listitem}
-                onPress={this.Clicked}>
-                {
-                    <View style={styles.item}>
-                        <Text style={styles.Title}>Forum</Text>
-                    </View>
-                }
-            </TouchableOpacity>
-            <TouchableOpacity
-                style={styles.listitem}
-                onPress={this.Clicked}>
-                {
-                    <View style={styles.item}>
-                        <Text style={styles.Title}>Event</Text>
+            </ScrollView>
+        );
+    }
 
-                    </View>
-                }
-            </TouchableOpacity>
-            <TouchableOpacity
-                style={styles.listitem}
-                onPress={this.Clicked}>
-                {
-                    <View style={styles.item}>
-                        <Text style={styles.Title}>Cloud</Text>
-
-                    </View>
-                }
-            </TouchableOpacity>
-            <TouchableOpacity
-                style={styles.listitem}
-                onPress={this.Clicked}>
-                {
-                    <View style={styles.item}>
-                        <Text style={styles.Title}>Library</Text>
-
-                    </View>
-                }
-            </TouchableOpacity>
-
-            <TouchableOpacity
-                style={styles.listitem}
-                onPress={this.Clicked}>
-                {
-                    <View style={styles.item}>
-
-                        <Text style={styles.Title}>Brainbox</Text>
-
-                    </View>
-                }
-            </TouchableOpacity>
-            <TouchableOpacity
-                style={styles.listitem}
-                onPress={this.Clicked}>
-                {
-                    <View style={styles.item}>
-
-                        <Text style={styles.Title}>Messages</Text>
-
-                    </View>
-                }
-            </TouchableOpacity>
-            <TouchableOpacity
-                style={styles.listitem}
-                onPress={this.Clicked}>
-                {
-                    <View style={styles.item}>
-                        <Text style={styles.Title}>News and TV</Text>
-
-                    </View>
-                }
-            </TouchableOpacity>
-            <TouchableOpacity
-                style={styles.listitem}
-                onPress={this.Clicked}>
-                {
-                    <View style={styles.item}>
-
-                        <Text style={styles.Title}>Social</Text>
-
-                    </View>
-                }
-            </TouchableOpacity>
-            <TouchableOpacity
-                style={styles.listitem}
-                onPress={this.Clicked}>
-                {
-                    <View style={styles.item}>
-
-                        <Text style={styles.Title}>Market</Text>
-
-                    </View>
-                }
-            </TouchableOpacity>
-            <TouchableOpacity
-                style={styles.listitem}
-                onPress={this.Clicked}>
-                {
-                    <View style={styles.item}>
-
-                        <Text style={styles.Title}>Forum</Text>
-
-                    </View>
-                }
-            </TouchableOpacity>
-            <TouchableOpacity
-                style={styles.listitem}
-                onPress={this.Clicked}>
-                {
-                    <View style={styles.item}>
-
-                        <Text style={styles.Title}>Rewards</Text>
-
-                    </View>
-                }
-            </TouchableOpacity>
-            <View style={styles.footer}>
-
-                <TouchableOpacity
-                    // onPress={this._pickImage}
-                    style={styles.setting}
-                >
-                    <Text> Settings </Text>
-
-
-                </TouchableOpacity>
-                <TouchableOpacity
-                    // onPress={this._pickImage}
-                    style={styles.help}
-                >
-
-                    <Text> Help </Text>
+    Clicked = () => {
+        Alert.alert('Item Clicked..');
+    }
 
 
 
-                </TouchableOpacity>
-            </View>
+    onChooseImagePress = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            allowsEditing: true,
+            aspect: [4, 4],
+        });
 
+        console.log(result.uri)
 
+        if (!result.cancelled) {
 
-        </ScrollView>
-    );
-}
+            var url;
+            var user = firebase.auth().currentUser.uid;
 
-Clicked = () =>{
-    Alert.alert('Item Clicked..');
-}
+            const response = await fetch(result.uri);
+            const blob = await response.blob();
 
+            firebase.storage().ref().child('images/' + user).put(blob);
 
+            setTimeout(() => {
 
-onChooseImagePress = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-        allowsEditing: true,
-        aspect: [4, 4],
-    });
+                firebase.storage().ref().child('images/' + user).getDownloadURL().then(function (downloadURL) {
+                    console.log('File available at', downloadURL);
 
-    console.log(result.uri)
+                    var db = firebase.firestore();
 
-    if (!result.cancelled) {
-
-        var url;
-        var user = firebase.auth().currentUser.uid;
-
-        const response = await fetch(result.uri);
-        const blob = await response.blob();
-        
-        firebase.storage().ref().child('images/' + user).put(blob);
-
-        setTimeout(() => {
-
-            firebase.storage().ref().child('images/' + user).getDownloadURL().then(function(downloadURL) {
-                console.log('File available at', downloadURL);
-    
-                var db = firebase.firestore();
-    
                     const settings = { timestampsInSnapshots: true };
                     db.settings(settings)
-    
+
                     db.collection('Users').doc(user).update(
                         { ImageUrl: downloadURL }
                     );
                     // console.log(downloadURL);
-    
-            });
-            
-          }, 3500
-        )
-        // this.props.navigation.navigate ('Welcome')
-    
-      }
 
-            }
+                });
+
+            }, 3500
+            )
+            // this.props.navigation.navigate ('Welcome')
+
+        }
+
+    }
+}
+
 
 
 

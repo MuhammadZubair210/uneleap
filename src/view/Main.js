@@ -60,20 +60,13 @@ export default class Main extends React.Component {
         StatusBar.setHidden(true);
         var varification = firebase.auth().currentUser.emailVerified
         var userId = firebase.auth().currentUser.uid
-        if (varification) {
-            this.state.isVerified = "Verified"
-        }
-        else {
-            this.state.isVerified = "Not Verified"
-        }
-
         var db = firebase.firestore();
 
         const settings = { timestampsInSnapshots: true };
         db.settings(settings)
 
         db.collection('Users').doc(userId).update(
-            { Verification: this.state.isVerified }
+            { Verification: varification }
         );
     }
 
@@ -122,9 +115,6 @@ export default class Main extends React.Component {
                 <View style={styles.container}>
                 <TouchableOpacity style={styles.SignUp}
                     onPress={this.onLogoutPress}>
-
-                    <Text onPress={this.profileNav}
-                style={styles.text}>Profile</Text>
 
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.SignUp}

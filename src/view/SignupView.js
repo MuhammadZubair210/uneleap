@@ -58,20 +58,6 @@ export default class SignupView extends React.Component {
 
                 var verification = firebase.auth().currentUser.emailVerified;
 
-                // firebase.database().ref('Users/' + userId).set(
-                //     {
-                //         FullName: this.state.fullName,
-                //         Email: this.state.email,
-                //         Username: this.state.userName,
-                //         UserType: this.state.userType,
-                //         Gender: this.state.gender,
-                //         University: this.state.university,
-                //         Affiliation: this.state.affiliation,
-                //         Degree: this.state.degree,
-
-                //     }
-                // )
-
 
                 var db = firebase.firestore();
 
@@ -89,17 +75,24 @@ export default class SignupView extends React.Component {
                     Affiliation: this.state.affiliation,
                     Degree: this.state.degree,
                     Verification: verification,
+                    ImageUrl: "null",
                 });
 
-                this.props.navigation.navigate('Main')
-
                 ToastAndroid.showWithGravityAndOffset(
-                    'Activation Mail Send to you Email.',
+                    'Activation Mail Send to your Email.',
                     ToastAndroid.LONG,
                     ToastAndroid.BOTTOM,
                     25,
                     50
                   );
+
+                  if (verification) {
+                    this.props.navigation.navigate('Main')
+                }
+                else {
+                    this.props.navigation.navigate('Login')
+                }
+
 
             }, (error) => { Alert.alert(error.message); });
     }

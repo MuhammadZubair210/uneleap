@@ -84,6 +84,12 @@ const LoginNav = createStackNavigator({
       header: null
     }),
   },
+  Menu:{
+    screen: Menu,
+    navigationOptions: () => ({
+      header: null
+    }),
+  },
 });
 
 

@@ -22,10 +22,20 @@ export default class Splash extends React.Component {
     setTimeout(() => {
       var user = firebase.auth().currentUser;
 
-      if (user) {
-        this.props.navigation.navigate('Main')
-      } else {
+      console.log(user);
+
+      if (user === null) {
+
         this.props.navigation.navigate('Welcome')
+
+      } else {
+        var verification = firebase.auth().currentUser.emailVerified;
+        if (verification) {
+          this.props.navigation.navigate('Main')
+        }
+        else {
+          this.props.navigation.navigate('Welcome')
+        }
       }
     }, 3000
     )
