@@ -124,7 +124,7 @@ export default function Menu({ onItemSelected }) {
                         onPress={this.Clicked}>
                         {
                             <View style={styles.item}>
-                                <Text style={styles.Title}>Event</Text>
+                                <Text style={styles.Title}>Events</Text>
 
                             </View>
                         }
@@ -167,7 +167,7 @@ export default function Menu({ onItemSelected }) {
                         {
                             <View style={styles.item}>
 
-                                <Text style={styles.Title}>Messages</Text>
+                                <Text style={styles.Title}>Chat</Text>
 
                             </View>
                         }
@@ -177,7 +177,7 @@ export default function Menu({ onItemSelected }) {
                         onPress={this.Clicked}>
                         {
                             <View style={styles.item}>
-                                <Text style={styles.Title}>News and TV</Text>
+                                <Text style={styles.Title}>News</Text>
 
                             </View>
                         }
@@ -210,18 +210,7 @@ export default function Menu({ onItemSelected }) {
                         {
                             <View style={styles.item}>
 
-                                <Text style={styles.Title}>Forum</Text>
-
-                            </View>
-                        }
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={styles.listitem}
-                        onPress={this.Clicked}>
-                        {
-                            <View style={styles.item}>
-
-                                <Text style={styles.Title}>Rewards</Text>
+                                <Text style={styles.Title}>Reward</Text>
 
                             </View>
                         }
