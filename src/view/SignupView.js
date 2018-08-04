@@ -86,14 +86,8 @@ export default class SignupView extends React.Component {
                     50
                   );
 
-                  if (verification) {
-                    this.props.navigation.navigate('Main')
-                }
-                else {
-                    this.props.navigation.navigate('Login')
-                }
-
-
+                  this.props.navigation.navigate('Webview')
+                  
             }, (error) => { Alert.alert(error.message); });
     }
 

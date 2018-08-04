@@ -10,6 +10,8 @@ import Splash from './Splash';
 import SignupPremium from './SignupPremium'
 import Menu from './Menu'
 import Profile from './Profile'
+import Webview from './Webview'
+import App from './App'
 
 const LoginNav = createStackNavigator({
   Splash:{
@@ -20,9 +22,11 @@ const LoginNav = createStackNavigator({
   },
   Welcome:{
     screen: Welcome,
-    navigationOptions: () => ({
-      header: null
-    }),
+    navigationOptions: ({navigation}) => ({
+      title: 'Welcome',
+      headerTitleStyle: styles.titleMenu,
+      headerLeft: null          
+  }), 
   },
   Init: {
     screen: InitView,
@@ -84,8 +88,14 @@ const LoginNav = createStackNavigator({
       header: null
     }),
   },
-  Menu:{
-    screen: Menu,
+  Webview:{
+    screen: Webview,
+    navigationOptions: () => ({
+      header: null
+    }),
+  },
+  App:{
+    screen: App,
     navigationOptions: () => ({
       header: null
     }),

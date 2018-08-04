@@ -97,6 +97,9 @@ export default class Welcome extends React.Component {
 
     constructor(props) {
         super(props);
+        console.ignoredYellowBox = [
+            'Setting a timer'
+        ];
 
         this.state = {
             data: [

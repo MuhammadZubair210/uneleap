@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Image, Alert, BackHandler, ScrollView, TextInput,ToastAndroid, TouchableOpacity, KeyboardAvoidingView, StatusBar } from 'react-native'
+import { View, Text, Image, Alert, BackHandler, ScrollView, TextInput, ToastAndroid, TouchableOpacity, KeyboardAvoidingView, StatusBar } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import styles from '../style/css'
 import firebase from 'firebase'
@@ -13,6 +13,9 @@ import {
 export default class LoginView extends React.Component {
     constructor(props) {
         super(props)
+        console.ignoredYellowBox = [
+            'Setting a timer'
+        ];
         this.state = {
             init: true,
             errMsg: null,
@@ -40,7 +43,7 @@ export default class LoginView extends React.Component {
                 console.log(verification);
 
                 if (verification) {
-                    this.props.navigation.navigate('Main')
+                    this.props.navigation.navigate('App')
                 }
                 else {
                     Alert.alert("You are not verified..")

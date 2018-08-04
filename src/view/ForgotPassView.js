@@ -9,6 +9,9 @@ import { Icon } from 'react-native-elements'
 export default class ForgotPassView extends React.Component {
     constructor(props) {
         super(props)
+        console.ignoredYellowBox = [
+            'Setting a timer'
+        ];
         this.state = {
             init: true,
             errMsg: null,

@@ -10,6 +10,9 @@ export default class Splash extends React.Component {
 
   constructor() {
     super()
+    console.ignoredYellowBox = [
+      'Setting a timer'
+  ];
     this.RotateValueHolder = new Animated.Value(0);
   }
 
@@ -31,7 +34,7 @@ export default class Splash extends React.Component {
       } else {
         var verification = firebase.auth().currentUser.emailVerified;
         if (verification) {
-          this.props.navigation.navigate('Main')
+          this.props.navigation.navigate('App')
         }
         else {
           this.props.navigation.navigate('Welcome')

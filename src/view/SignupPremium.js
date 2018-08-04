@@ -13,6 +13,10 @@ export default class SignupPremium extends React.Component {
     constructor(props) {
         super(props)
 
+        console.ignoredYellowBox = [
+            'Setting a timer'
+        ];
+
         this.state = {
 
             init: true,
@@ -72,9 +76,11 @@ export default class SignupPremium extends React.Component {
                 var userId = firebase.auth().currentUser.uid
 
                 var db = firebase.firestore();
+                db.settings({
+                    timestampsInSnapshots: true
+                });
 
-                const settings = { timestampsInSnapshots: true };
-                db.settings(settings)
+                // db.settings(firebase.firestore.Timestamp)
 
                 db.collection('Users').doc(userId).set({
                     FullName: this.state.fullName,
@@ -95,12 +101,9 @@ export default class SignupPremium extends React.Component {
                     25,
                     50
                 );
-                if (verification) {
-                    this.props.navigation.navigate('Main')
-                }
-                else {
-                    this.props.navigation.navigate('Login')
-                }
+
+                    this.props.navigation.navigate('Webview')
+                
             }, (error) => { Alert.alert(error.message); });
     }
 
