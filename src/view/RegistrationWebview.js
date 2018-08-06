@@ -59,10 +59,10 @@ const styles = StyleSheet.create({
   Continue: {
     justifyContent: 'flex-end',
     alignItems: 'center',
-    padding: 5,
+    padding: 10,
   },
   Title: {
-    fontSize: 18,
+    fontSize: 25,
   }
 });
 

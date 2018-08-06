@@ -123,7 +123,7 @@ export default class SignupView extends React.Component {
                                 <Picker.Item label="Student" value="Student" />
                                 <Picker.Item label="Alumni" value="Alumni" />
                                 <Picker.Item label="Faculty" value="Faculty" />
-                                {/* <Picker.Item label="Univercity Admin" value="Univercity Admin" />
+                                {/* <Picker.Item label="University Admin" value="University Admin" />
                                 <Picker.Item label="Business Admin" value="Business Admin" /> */}
                                 <Picker.Item label="Guest" value="Guest" />
                             </Picker>

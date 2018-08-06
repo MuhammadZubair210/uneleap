@@ -10,7 +10,7 @@ import Splash from './Splash';
 import SignupPremium from './SignupPremium'
 import Menu from './Menu'
 import Profile from './Profile'
-import Webview from './Webview'
+import Webview from './RegistrationWebview'
 import App from './App'
 
 const LoginNav = createStackNavigator({
